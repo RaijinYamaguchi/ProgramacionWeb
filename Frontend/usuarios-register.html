@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Usuario</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav>
+    <span id="nombreUsuario"></span>
+    <button onclick="cerrarSesion()">Cerrar sesión</button>
+  </nav>
+  <main>
+    <h1>Registrar Usuario</h1>
+    <form id="formRegistro">
+      <label>Nombre:<input type="text" name="nombre" required></label><br>
+      <label>Email:<input type="email" name="email" required></label><br>
+      <label>Contraseña:<input type="password" name="password" required></label><br>
+      <label>Rol:
+        <select name="rol" required>
+          <option value="admin">Admin</option>
+          <option value="usuario">Usuario</option>
+        </select>
+      </label><br>
+      <button type="submit">Registrar</button>
+      <button type="button" onclick="window.location.href='Usuarios.html'">Cancelar</button>
+    </form>
+    <div id="alerta"></div>
+  </main>
+  <script src="js/usuarios-register.js"></script>
+</body>
+</html>

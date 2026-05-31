@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Tanque</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+      <span class="navbar-brand fw-bold">Editar Tanque</span>
+      <div class="d-flex align-items-center ms-auto">
+        <span class="text-white me-3" id="nombreUsuario"></span>
+        <button class="btn btn-outline-light btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
+      </div>
+    </div>
+  </nav>
+  <main class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-body">
+            <h2 class="card-title mb-4">Editar Tanque</h2>
+            <div id="alerta"></div>
+            <form id="formEditar">
+              <input type="hidden" name="id" id="tanqueId">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre del Tanque</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+              </div>
+              <div class="mb-3">
+                <label for="ubicacion" class="form-label">Ubicación</label>
+                <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+              </div>
+              <div class="mb-3">
+                <label for="capacidad_max" class="form-label">Capacidad Máxima (litros)</label>
+                <input type="number" class="form-control" id="capacidad_max" name="capacidad_max" required>
+              </div>
+              <div class="mb-3">
+                <label for="nivel_min_alerta" class="form-label">Nivel Mínimo de Alerta (litros)</label>
+                <input type="number" class="form-control" id="nivel_min_alerta" name="nivel_min_alerta" required>
+              </div>
+              <div class="mb-3">
+                <label for="nivel_max_alerta" class="form-label">Nivel Máximo de Alerta (litros)</label>
+                <input type="number" class="form-control" id="nivel_max_alerta" name="nivel_max_alerta" required>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="activo" name="activo">
+                <label class="form-check-label" for="activo">Tanque Activo</label>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">Guardar Cambios</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='Tanques.html'">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/tanques-editar.js"></script>
+</body>
+</html>

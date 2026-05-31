@@ -1,0 +1,264 @@
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow-x: hidden;
+}
+
+/* ── Grid background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,170,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,170,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Radial glow center ── */
+body::after {
+  content: '';
+  position: fixed;
+  top: 40%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0,170,255,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Card container ── */
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+  animation: fadeUp 0.55s ease both;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+/* ── Logo / brand ── */
+.auth-logo {
+  font-family: var(--mono);
+  font-size: 1.4rem;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-shadow: var(--glow);
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+
+.auth-logo span {
+  color: var(--muted);
+  font-size: 0.65rem;
+  display: block;
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+/* ── Title / subtitle ── */
+.auth-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 1.5rem 0 0.4rem;
+}
+
+.auth-sub {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+/* ── Form fields ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.field label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.field input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.field input::placeholder { color: var(--muted); }
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: var(--glow2);
+}
+
+/* ── Field error message ── */
+.field-error {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: #ff5f7a;
+  display: none;
+  margin-top: 2px;
+}
+
+.field.invalid input  { border-color: #ff5f7a; }
+.field.invalid .field-error { display: block; }
+
+/* ── Submit button ── */
+.btn-submit {
+  width: 100%;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  margin-top: 0.5rem;
+}
+
+.btn-submit:hover {
+  background: var(--accent2);
+  box-shadow: var(--glow);
+  transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Loading spinner inside button ── */
+.btn-submit .spinner {
+  display: none;
+  width: 14px; height: 14px;
+  border: 2px solid var(--bg);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto;
+}
+
+.btn-submit.loading .btn-label { display: none; }
+.btn-submit.loading .spinner   { display: block; }
+
+/* ── Divider ── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-family: var(--mono);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Redirect link ── */
+.auth-redirect {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 1.5rem;
+}
+
+.auth-redirect a {
+  color: var(--accent);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  transition: color 0.2s;
+}
+
+.auth-redirect a:hover { color: var(--accent2); }
+
+/* ── Toast notification ── */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  padding: 12px 20px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 200;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.error { border-left-color: #ff5f7a; }
+.toast.success { border-left-color: #28c840; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 460px) {
+  .auth-card { padding: 2rem 1.25rem; }
+}
