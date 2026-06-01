@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tokens de Dispositivos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="has-fixed-nav">
+
+  <!-- ══ NAV (mismo que inicio.html) ══ -->
+  <nav class='nav-links'> 
+    <div class='container'> 
+      <span class='navbar-brand fw-bold'>Mi Sistema</span> 
+      <div class='ms-auto d-flex align-items-center gap-3'> 
+        <div><img src='' alt='Usuario' class='rounded-circle' width='30' height='30'></div>
+        <span class='text-white' id='nombreUsuario'></span> 
+        <a href="inicio.html" class='text-white'>Inicio</a>
+        <a href="Dispositivos.html" class='text-white'>Dispositivos</a>
+        <a href="Usuarios.html" class='text-white'>Usuarios</a>
+        <a href="Tanques.html" class='text-white'>Tanques</a>
+        <a href="Reportes.html" class='text-white'>Reportes</a>
+        <a href="Tokens.html" class="text-white">Tokens ESP</a>
+        <a href="Settings.html" class='text-white'>Configuración</a>
+        <button class='btn btn-outline-light btn-sm' onclick='cerrarSesión()'> 
+          Cerrar Sesión 
+        </button> 
+      </div> 
+    </div> 
+  </nav> 
+
+  <!-- ══ MAIN ══ -->
+  <main class="container py-5">
+
+    <div id="alerta"></div>
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h1 class="h3 mb-0">Tokens de Dispositivos</h1>
+        <p class="text-muted small mb-0">Gestiona los tokens JWT de larga duración para tus ESP</p>
+      </div>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalGenerarToken">
+        <i class="bi bi-key"></i> Generar nuevo token
+      </button>
+    </div>
+
+    <!-- Buscador -->
+    <div class="row mb-3">
+      <div class="col-md-5">
+        <input type="text" id="buscador" class="form-control" placeholder="Buscar por dispositivo o descripción...">
+      </div>
+    </div>
+
+    <!-- Spinner -->
+    <div id="spinner" class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="text-muted mt-2">Cargando tokens...</p>
+    </div>
+
+    <!-- Tabla (oculta hasta cargar) -->
+    <div id="contenido" class="d-none">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle" id="tablaTokens">
+          <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>Dispositivo</th>
+              <th>Tanque</th>
+              <th>Descripción</th>
+              <th>Último uso</th>
+              <th>Expira</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoTabla"></tbody>
+        </table>
+      </div>
+      <p class="text-muted small" id="contadorTokens"></p>
+    </div>
+
+  </main>
+
+
+  <!-- ══ MODAL — Generar token ══ -->
+  <div class="modal fade" id="modalGenerarToken" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title"><i class="bi bi-key"></i> Generar token para ESP</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="alertaModal"></div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">ID del Dispositivo</label>
+            <input type="number" id="inputDeviceId" class="form-control" placeholder="Ej: 1" min="1">
+            <div class="form-text">El ID que aparece en la tabla de Dispositivos.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Descripción (opcional)</label>
+            <input type="text" id="inputDescripcion" class="form-control" placeholder="Ej: ESP32-Tanque-Principal">
+          </div>
+
+          <!-- Resultado del token generado -->
+          <div id="resultadoToken" class="d-none">
+            <hr>
+            <p class="fw-semibold text-success mb-1"><i class="bi bi-check-circle"></i> Token generado</p>
+            <p class="text-muted small mb-1">Cópialo ahora — no se mostrará de nuevo.</p>
+            <div class="input-group">
+              <input type="text" id="tokenGenerado" class="form-control font-monospace small" readonly>
+              <button class="btn btn-outline-secondary" onclick="copiarToken()">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+            <div class="form-text mt-1" id="tokenExpira"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnGenerar" onclick="generarToken()">
+            Generar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ MODAL — Confirmar revocación ══ -->
+  <div class="modal fade" id="modalRevocar" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">Revocar token</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>¿Desactivar este token? El ESP dejará de poder enviar datos.</p>
+          <input type="hidden" id="tokenIdRevocar">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-danger btn-sm" onclick="confirmarRevocar()">Sí, revocar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ FOOTER (mismo que inicio.html) ══ -->
+  <footer>
+    <div class="footer-logo">SCA</div>
+    <div class="footer-copy">© 2025 Sistema de Control de Agua. S.L.P, MX.</div>
+    <div class="footer-links">
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+      <a href="https://w.app/ewelgl">Contacto</a>
+      <a href="https://github.com/RaijinYamaguchi/ProgramacionWeb">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/tokens.js"></script>
+</body>
+</html>

@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt    = require('jsonwebtoken');
 const Auth   = require('../models/authModel');
+const TokenModel = require('../models/tokenModel');
+const Dispositivo = require('../models/dispositivoModel');
 require('dotenv').config();
 
 // Registro: valida campos, evita emails duplicados, encripta password y crea usuario
@@ -103,5 +105,141 @@ const eliminarUsuario = (req, res) => {
       res.json({ mensaje: 'Usuario eliminado correctamente' });
     });
   });
+};
+
+// Generar JWT secundario para dispositivos ESP (válido 1 año)
+const generarTokenDispositivo = (req, res) => {
+  const { dispositivo_id, descripcion } = req.body;
+  const usuario_id = req.userId; // Del middleware de autenticación
+
+  if (!dispositivo_id) {
+    return res.status(400).json({ error: 'dispositivo_id es requerido' });
+  }
+
+  // Verificar que el dispositivo pertenece al usuario
+  Dispositivo.getById(dispositivo_id, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Dispositivo no encontrado' });
+    }
+
+    const dispositivo = results[0];
+    if (dispositivo.usuario_id !== usuario_id) {
+      return res.status(403).json({ error: 'No tienes permiso sobre este dispositivo' });
+    }
+
+    // Generar token con duración de 1 año
+    const tokenJWT = jwt.sign(
+      {
+        dispositivo_id: dispositivo.id,
+        usuario_id: usuario_id,
+        nombre: dispositivo.nombre,
+        tipo: 'esp32_sensor'
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '365d' } // 1 año
+    );
+
+    // Calcular fecha de expiración (1 año desde ahora)
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+    // Guardar token en la base de datos
+    const tokenData = {
+      dispositivo_id: dispositivo.id,
+      token: tokenJWT,
+      descripcion: descripcion || `Token ESP - ${dispositivo.nombre}`,
+      activo: 1,
+      expires_at: expiresAt
+    };
+
+    TokenModel.crearToken(tokenData, (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      
+      res.status(201).json({
+        mensaje: 'Token generado correctamente',
+        token: tokenJWT,
+        dispositivo_id: dispositivo.id,
+        dispositivo_nombre: dispositivo.nombre,
+        expires_at: expiresAt,
+        duracion: '1 año'
+      });
+    });
+  });
+};
+
+// Obtener tokens de dispositivos del usuario
+const obtenerTokensDispositivos = (req, res) => {
+  const usuario_id = req.userId;
+
+  TokenModel.listarTokensUsuario(usuario_id, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results || []);
+  });
+};
+
+// Desactivar un token de dispositivo
+const desactivarTokenDispositivo = (req, res) => {
+  const { token_id } = req.params;
+  const usuario_id = req.userId;
+
+  // Primero verificar que el token pertenece al usuario
+  // Para esto necesitamos hacer una query más compleja
+  const db = require('../config/database');
+  const query = `
+    SELECT td.* FROM tokens_dispositivos td
+    JOIN dispositivos d ON td.dispositivo_id = d.id
+    WHERE td.id = ? AND d.usuario_id = ?
+  `;
+
+  db.query(query, [token_id, usuario_id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Token no encontrado o sin permisos' });
+    }
+
+    TokenModel.desactivarToken(token_id, (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ mensaje: 'Token desactivado correctamente' });
+    });
+  });
+};
+
+// Verificar token de dispositivo (para uso del ESP)
+const verificarTokenEsp = (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Token no proporcionado' });
+  }
+
+  TokenModel.verificarToken(token, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0) {
+      return res.status(401).json({ error: 'Token inválido o expirado' });
+    }
+
+    const tokenData = results[0];
+    // Actualizar último uso
+    TokenModel.actualizarUltimo(tokenData.id, () => {});
+
+    res.json({
+      valido: true,
+      dispositivo_id: tokenData.dispositivo_id,
+      dispositivo_nombre: tokenData.descripcion,
+      expires_at: tokenData.expires_at
+    });
+  });
 };  
-module.exports = { registro, login, listarUsuarios, obtenerUsuario, editarUsuario, eliminarUsuario };
+module.exports = { 
+  registro, 
+  login, 
+  listarUsuarios, 
+  obtenerUsuario, 
+  editarUsuario, 
+  eliminarUsuario,
+  generarTokenDispositivo,
+  obtenerTokensDispositivos,
+  desactivarTokenDispositivo,
+  verificarTokenEsp
+};

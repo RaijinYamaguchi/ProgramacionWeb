@@ -4,29 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registrar Usuario</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <nav>
-    <span id="nombreUsuario"></span>
-    <button onclick="cerrarSesion()">Cerrar sesión</button>
-  </nav>
-  <main>
-    <h1>Registrar Usuario</h1>
-    <form id="formRegistro">
-      <label>Nombre:<input type="text" name="nombre" required></label><br>
-      <label>Email:<input type="email" name="email" required></label><br>
-      <label>Contraseña:<input type="password" name="password" required></label><br>
-      <label>Rol:
-        <select name="rol" required>
-          <option value="admin">Admin</option>
-          <option value="usuario">Usuario</option>
-        </select>
-      </label><br>
-      <button type="submit">Registrar</button>
-      <button type="button" onclick="window.location.href='Usuarios.html'">Cancelar</button>
-    </form>
-    <div id="alerta"></div>
+  <nav class='nav-links'> 
+    <div class='container'> 
+      <span class='navbar-brand fw-bold'>Mi Sistema</span> 
+      <div class='ms-auto d-flex align-items-center gap-3'> 
+        <div><img src='' alt='Usuario' class='rounded-circle' width='30' height='30'></div>
+        <span class='text-white' id='nombreUsuario'></span> 
+        <a href="inicio.html" class='text-white'>Inicio</a>
+        <a href="Dispositivos.html" class='text-white'>Dispositivos</a>
+        <a href="Usuarios.html" class='text-white'>Usuarios</a>
+        <a href="Tanques.html" class='text-white'>Tanques</a>
+        <a href="Reportes.html" class='text-white'>Reportes</a>
+        <a href="Tokens.html" class="text-white">Tokens ESP</a>
+        <a href="Settings.html" class='text-white'>Configuración</a>
+        <button class='btn btn-outline-light btn-sm' onclick='cerrarSesión()'> 
+          Cerrar Sesión 
+        </button> 
+      </div> 
+    </div> 
+  </nav> 
+  <main class="section-inner">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title mb-4">Registrar Usuario</h2>
+              <div id="alerta"></div>
+              <form id="formRegistro">
+                <div class="mb-3">
+                  <label for="nombre" class="form-label fw-semibold">Nombre</label>
+                  <input type="text" class="form-control" name="nombre" id="nombre" required>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label fw-semibold">Email</label>
+                  <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label fw-semibold">Contraseña</label>
+                  <input type="password" class="form-control" name="password" id="password" required>
+                </div>
+                <div class="mb-4">
+                  <label for="rol" class="form-label fw-semibold">Rol</label>
+                  <select class="form-select" name="rol" id="rol" required>
+                    <option value="admin">Admin</option>
+                    <option value="usuario">Usuario</option>
+                  </select>
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-success">Registrar</button>
+                  <button type="button" class="btn btn-secondary" onclick="window.location.href='Usuarios.html'">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
   <script src="js/usuarios-register.js"></script>
 </body>

@@ -65,9 +65,10 @@ function eliminarUsuario(id) {
     .catch(() => mostrarAlerta('No se pudo eliminar el usuario'));
 }
 
-function cerrarSesion() {
-  sessionStorage.clear();
-  window.location.href = 'login.html';
-}
+function cerrarSesión() { 
+  if (!confirm('Seguro que deseas cerrar sesión?')) return; 
+  sessionStorage.clear();  // elimina token y nombre 
+  window.location.href = 'login.html'; 
+} 
 
 cargarUsuarios();

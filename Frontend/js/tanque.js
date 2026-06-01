@@ -34,7 +34,7 @@ function cargarTanques(filtro = '') {
         );
       }
       if (tanques.length === 0) {
-        tabla.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No se encontraron tanques</td></tr>';
+        tabla.innerHTML = '<tr><td colspan="9" class="text-center text-muted">No se encontraron tanques</td></tr>';
         return;
       }
       tanques.forEach(t => {
@@ -52,6 +52,7 @@ function cargarTanques(filtro = '') {
               </span>
             </td>
             <td>
+              <button class="btn btn-sm btn-info" onclick="verNivelActual(${t.id}, '${t.nombre}')">Ver Nivel</button>
               <button class="btn btn-sm btn-warning" onclick="editarTanque(${t.id})">Editar</button>
               <button class="btn btn-sm btn-danger" onclick="eliminarTanque(${t.id})">Eliminar</button>
             </td>
@@ -98,9 +99,31 @@ function eliminarTanque(id) {
     });
 }
 
-function cerrarSesion() {
-  sessionStorage.clear();
-  window.location.href = 'login.html';
+function verNivelActual(id, nombre) {
+  fetch(`${API}/tanques/nivel-actual`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+    .then(res => res.json())
+    .then(data => {
+      const niveles = Array.isArray(data) ? data : data.datos || [];
+      const nivelTanque = niveles.find(n => n.id_tanque === id);
+      
+      if (nivelTanque) {
+        mostrarAlerta(
+          `<strong>${nombre}</strong><br>Nivel Actual: <strong>${nivelTanque.nivel} L</strong><br>Fecha: ${new Date(nivelTanque.fecha).toLocaleString('es-MX')}`,
+          'info'
+        );
+      } else {
+        mostrarAlerta(`No hay mediciones disponibles para el tanque "${nombre}"`, 'warning');
+      }
+    })
+    .catch(err => mostrarAlerta('Error al obtener nivel actual: ' + err.message));
 }
+
+function cerrarSesión() { 
+  if (!confirm('Seguro que deseas cerrar sesión?')) return; 
+  sessionStorage.clear();  // elimina token y nombre 
+  window.location.href = 'login.html'; 
+} 
 
 cargarTanques();

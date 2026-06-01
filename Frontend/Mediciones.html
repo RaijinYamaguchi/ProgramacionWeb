@@ -4,74 +4,102 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mediciones</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-light">
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-bold">Gestión de Mediciones</span>
-      <div class="d-flex align-items-center ms-auto">
-        <span class="text-white me-3" id="nombreUsuario"></span>
-        <button class="btn btn-outline-light btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
+<body class="has-fixed-nav">
+  
+  <!-- ══ NAV ══ -->
+  <nav class='nav-links'> 
+    <div class='container'> 
+      <span class='navbar-brand fw-bold'>Mi Sistema</span> 
+      <div class='ms-auto d-flex align-items-center gap-3'> 
+        <div><img src='' alt='Usuario' class='rounded-circle' width='30' height='30'></div>
+        <span class='text-white' id='nombreUsuario'></span> 
+        <a href="inicio.html" class='text-white'>Inicio</a>
+        <a href="Dispositivos.html" class='text-white'>Dispositivos</a>
+        <a href="Usuarios.html" class='text-white'>Usuarios</a>
+        <a href="Tanques.html" class='text-white'>Tanques</a>
+        <a href="Reportes.html" class='text-white'>Reportes</a>
+        <a href="Tokens.html" class="text-white">Tokens ESP</a>
+        <a href="Settings.html" class='text-white'>Configuración</a>
+        <button class='btn btn-outline-light btn-sm' onclick='cerrarSesión()'> 
+          Cerrar Sesión 
+        </button> 
+      </div> 
+    </div> 
+  </nav> 
+
+  <!-- ══ MAIN ══ -->
+  <main class="container py-5">
+    
+    <div id="alerta"></div>
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="h3 mb-0">Mediciones</h1>
+        <p class="text-muted small mb-0">Historial de todas las mediciones de tus dispositivos</p>
+      </div>
+      <button class="btn btn-primary" onclick="recargarMediciones()" title="Actualizar mediciones">
+        <i class="bi bi-arrow-clockwise"></i> Actualizar
+      </button>
+    </div>
+
+    <!-- Buscador -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" id="buscador" class="form-control" placeholder="Buscar por dispositivo, tanque, nivel o porcentaje...">
+        </div>
       </div>
     </div>
-  </nav>
 
-  <!-- Contenedor principal -->
-  <div class="container-mediciones">
-    <!-- Sidebar con lista de tanques -->
-    <aside class="sidebar-tanques">
-      <h5>Tanques</h5>
-      <ul class="list-tanques" id="listaTanques">
-        <li class="spinner-container">
-          <div class="spinner-border spinner-border-sm" role="status">
-            <span class="visually-hidden">Cargando...</span>
-          </div>
-        </li>
-      </ul>
-    </aside>
+    <!-- Tabla -->
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle" id="tablaMediciones">
+        <thead class="table-primary">
+          <tr>
+            <th>ID</th>
+            <th>Dispositivo</th>
+            <th>Nivel (cm)</th>
+            <th>Porcentaje</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="bodyMediciones">
+          <tr>
+            <td colspan="6" class="text-center text-muted py-5">
+              <div class="spinner-border spinner-border-sm me-2" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+              Cargando mediciones...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <!-- Contenido: Tabla de mediciones -->
-    <main class="content-mediciones">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h3 mb-0">Mediciones</h1>
-        <button class="btn btn-success btn-sm" onclick="recargarMediciones()" title="Recargar mediciones">
-          ↻ Actualizar
-        </button>
-      </div>
+  </main>
 
-      <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle tabla-mediciones" id="tablaMediciones">
-          <thead class="table-primary">
-            <tr>
-              <th>ID</th>
-              <th>Tanque</th>
-              <th>Dispositivo</th>
-              <th>Temperatura (°C)</th>
-              <th>Humedad (%)</th>
-              <th>Lectura</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="bodyMediciones">
-            <tr>
-              <td colspan="8" class="text-center text-muted py-4">
-                Selecciona un tanque para ver sus mediciones
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">SCA</div>
+    <div class="footer-copy">© 2025 Sistema de Control de Agua. S.L.P, MX.</div>
+    <div class="footer-links">
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+      <a href="https://w.app/ewelgl">Contacto</a>
+      <a href="https://github.com/RaijinYamaguchi/ProgramacionWeb">GitHub</a>
+    </div>
+  </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
-
+  <script src="js/config.js"></script>
   <script src="js/mediciones.js"></script>
 </body>
 </html>

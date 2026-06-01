@@ -1,230 +1,141 @@
-let tanqueSeleccionado = null;
-let medicionesActuales = [];
-const token = sessionStorage.getItem('token') || localStorage.getItem('token');
-const nombreUsuario = sessionStorage.getItem('nombre') || localStorage.getItem('nombre');
+const token = sessionStorage.getItem('token');
+const nombre = sessionStorage.getItem('nombre');
 
-const API = {
-  BASE_URL: 'http://localhost:3000',
-  endpoints: {
-    tanques: '/api/tanques',
-    mediciones: '/api/mediciones'
-  }
-};
-
-document.getElementById('nombreUsuario').textContent = nombreUsuario || '';
+document.getElementById('nombreUsuario').textContent = nombre || '';
 
 if (!token) window.location.href = 'login.html';
 
-/**
- * Mostrar alerta visual
- */
-function mostrarAlerta(msg, tipo = 'danger', elemento = null) {
-  const contenedor = elemento || document.querySelector('.container-mediciones') || document.body;
-  const alerta = document.createElement('div');
-  alerta.className = `alert alert-${tipo} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
-  alerta.style.zIndex = '9999';
-  alerta.style.maxWidth = '500px';
-  alerta.innerHTML = `
+const tabla = document.querySelector('#bodyMediciones');
+const buscador = document.getElementById('buscador');
+const alerta = document.getElementById('alerta');
+let todasLasMediciones = [];
+
+function mostrarAlerta(msg, tipo = 'danger') {
+  const alertaDiv = document.getElementById('alerta') || document.body;
+  const html = `<div class='alert alert-${tipo} alert-dismissible fade show' role='alert'>
     ${msg}
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  `;
-  document.body.appendChild(alerta);
-  setTimeout(() => alerta.remove(), 4000);
-}
-
-/**
- * Cargar tanques en el sidebar
- */
-async function cargarTanques() {
-  try {
-    const response = await fetch(`${API.BASE_URL}${API.endpoints.tanques}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) throw new Error('Error al cargar tanques');
-
-    const tanques = await response.json();
-    const listaTanques = document.getElementById('listaTanques');
-    listaTanques.innerHTML = '';
-
-    if (!tanques || tanques.length === 0) {
-      listaTanques.innerHTML = '<li class="text-muted text-center py-3">No hay tanques disponibles</li>';
-      return;
-    }
-
-    tanques.forEach((tanque, index) => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.className = `tanque-item ${index === 0 ? 'active' : ''}`;
-      a.href = '#';
-      a.style.cursor = 'pointer';
-      a.innerHTML = `
-        <div class="fw-bold">${tanque.nombre}</div>
-        <div class="tanque-info small text-muted">
-          📍 ${tanque.ubicacion}
-          <br>
-          💧 ${tanque.capacidad_max}L
-        </div>
-      `;
-      a.onclick = (e) => {
-        e.preventDefault();
-        seleccionarTanque(tanque.id, a);
-      };
-      li.appendChild(a);
-      listaTanques.appendChild(li);
-
-      // Seleccionar primer tanque automáticamente
-      if (index === 0) {
-        tanqueSeleccionado = tanque.id;
-        cargarMediciones(tanque.id);
-      }
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    document.getElementById('listaTanques').innerHTML = 
-      '<li class="text-danger text-center py-3 small">Error al cargar tanques</li>';
-    mostrarAlerta('Error al cargar tanques: ' + error.message);
+  </div>`;
+  
+  if (document.getElementById('alerta')) {
+    document.getElementById('alerta').innerHTML = html;
+  } else {
+    const container = document.querySelector('.container-mediciones');
+    container.insertAdjacentHTML('beforebegin', `<div id="alerta">${html}</div>`);
   }
 }
 
-/**
- * Seleccionar un tanque del sidebar
- */
-function seleccionarTanque(tanqueId, elemento) {
-  document.querySelectorAll('.tanque-item').forEach(item => {
-    item.classList.remove('active');
-  });
-  elemento.classList.add('active');
-  tanqueSeleccionado = tanqueId;
-  cargarMediciones(tanqueId);
+function cerrarSesión() { 
+  if (!confirm('Seguro que deseas cerrar sesión?')) return; 
+  sessionStorage.clear();  // elimina token y nombre 
+  window.location.href = 'login.html'; 
 }
 
-/**
- * Cargar mediciones del tanque seleccionado
- */
-async function cargarMediciones(tanqueId) {
-  try {
-    const bodyMediciones = document.getElementById('bodyMediciones');
-    bodyMediciones.innerHTML = `
-      <tr>
-        <td colspan="8" class="text-center py-4">
-          <div class="spinner-border spinner-border-sm" role="status">
-            <span class="visually-hidden">Cargando...</span>
-          </div>
-        </td>
-      </tr>
-    `;
-
-    const response = await fetch(`${API.BASE_URL}${API.endpoints.mediciones}?tanque_id=${tanqueId}&limite=50`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) throw new Error('Error al cargar mediciones');
-
-    const mediciones = await response.json();
-    medicionesActuales = mediciones || [];
-    bodyMediciones.innerHTML = '';
-
-    if (!mediciones || mediciones.length === 0) {
-      bodyMediciones.innerHTML = `
-        <tr>
-          <td colspan="8" class="text-center text-muted py-4">No hay mediciones para este tanque</td>
-        </tr>
-      `;
-      return;
-    }
-
-    mediciones.forEach(med => {
-      const fila = document.createElement('tr');
-      const fecha = new Date(med.fecha || med.created_at).toLocaleString('es-ES');
-      const temp = med.temperatura ? parseFloat(med.temperatura).toFixed(1) : '-';
-      const humedad = med.humedad ? parseFloat(med.humedad).toFixed(1) : '-';
-      const lectura = med.lectura ? parseFloat(med.lectura).toFixed(2) : '-';
+function cargarTodasLasMediciones(filtro = '') {
+  fetch(`${API.url('mediciones')}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+    .then(res => {
+      if (res.status === 401) { cerrarSesion(); return; }
+      return res.json();
+    })
+    .then(data => {
+      if (!data) return;
+      todasLasMediciones = data;
+      tabla.innerHTML = '';
       
-      fila.innerHTML = `
-        <td><span class="badge bg-primary">${med.id}</span></td>
-        <td>${med.tanque?.nombre || 'N/A'}</td>
-        <td>${med.dispositivo?.nombre || 'N/A'}</td>
-        <td>${temp}°C</td>
-        <td>${humedad}%</td>
-        <td>${lectura} L</td>
-        <td class="small">${fecha}</td>
-        <td>
-          <button class="btn btn-sm btn-danger" onclick="eliminarMedicion(${med.id}, this)" title="Eliminar medición">
-            Eliminar
-          </button>
-        </td>
-      `;
-      bodyMediciones.appendChild(fila);
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    document.getElementById('bodyMediciones').innerHTML = `
-      <tr>
-        <td colspan="8" class="text-center text-danger py-4">Error al cargar mediciones: ${error.message}</td>
-      </tr>
-    `;
-    mostrarAlerta('Error al cargar mediciones: ' + error.message);
-  }
-}
-
-/**
- * Recargar mediciones del tanque actual
- */
-function recargarMediciones() {
-  if (tanqueSeleccionado) {
-    cargarMediciones(tanqueSeleccionado);
-  }
-}
-
-/**
- * Eliminar una medición
- */
-async function eliminarMedicion(id, boton) {
-  if (!confirm('¿Estás seguro de que deseas eliminar esta medición? Esta acción no se puede deshacer.')) return;
-
-  try {
-    const btnOriginal = boton.textContent;
-    boton.disabled = true;
-    boton.textContent = 'Eliminando...';
-
-    const response = await fetch(`${API.BASE_URL}${API.endpoints.mediciones}/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
+      let mediciones = todasLasMediciones;
+      if (filtro) {
+        mediciones = mediciones.filter(m =>
+          (m.id || '').toString().includes(filtro) ||
+          (m.dispositivo_nombre || '').toLowerCase().includes(filtro.toLowerCase()) ||
+          (m.tanque_nombre || '').toLowerCase().includes(filtro.toLowerCase()) ||
+          (m.nivel_agua || '').toString().includes(filtro) ||
+          (m.porcentaje || '').toString().includes(filtro)
+        );
       }
+      
+      if (mediciones.length === 0) {
+        tabla.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">No hay mediciones registradas</td></tr>';
+        return;
+      }
+      
+      mediciones.forEach(m => {
+        const fecha = m.fecha ? new Date(m.fecha).toLocaleString('es-MX', {
+          day: '2-digit', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        }) : '-';
+        
+        tabla.innerHTML += `
+          <tr>
+            <td><span class="badge bg-info">${m.id}</span></td>
+            <td>${m.dispositivo_nombre || '-'}</td>
+            <td>${(m.nivel_agua || 0).toFixed(2)} cm</td>
+            <td>${(m.porcentaje || 0).toFixed(1)}%</td>
+            <td><small>${fecha}</small></td>
+            <td>
+              <button class="btn btn-sm btn-danger" onclick="eliminarMedicion(${m.id})">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    })
+    .catch(err => {
+      mostrarAlerta('Error al cargar mediciones: ' + err.message);
+      tabla.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error al cargar mediciones</td></tr>';
     });
-
-    if (response.ok || response.status === 204) {
-      mostrarAlerta('Medición eliminada correctamente', 'success');
-      recargarMediciones();
-    } else {
-      const data = await response.json();
-      mostrarAlerta('Error al eliminar: ' + (data.error || 'Error desconocido'), 'danger');
-      boton.disabled = false;
-      boton.textContent = btnOriginal;
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    mostrarAlerta('Error al eliminar medición: ' + error.message, 'danger');
-    boton.disabled = false;
-    boton.textContent = 'Eliminar';
-  }
 }
 
-/**
- * Inicializar la página de mediciones
- */
+// Cargar mediciones al iniciar
+document.addEventListener('DOMContentLoaded', () => {
+  cargarTodasLasMediciones();
+});
+
+// Buscador
+const buscadorInput = document.getElementById('buscador');
+if (buscadorInput) {
+  buscadorInput.addEventListener('input', e => cargarTodasLasMediciones(e.target.value));
+}
+
+function recargarMediciones() {
+  cargarTodasLasMediciones();
+}
+
+function eliminarMedicion(id) {
+  const medicion = todasLasMediciones.find(m => m.id === id);
+  if (!confirm(`¿Estás seguro de que deseas eliminar esta medición? Esta acción no se puede deshacer.`)) return;
+  
+  const btn = event.target.closest('button');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Eliminando...';
+  
+  fetch(`${API.url('mediciones')}/${id}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+    .then(res => res.json())
+    .then(resp => {
+      if (resp.error || resp.mensaje?.includes('error')) {
+        mostrarAlerta(resp.error || resp.mensaje);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-trash"></i> Eliminar';
+      } else {
+        mostrarAlerta('Medición eliminada correctamente', 'success');
+        cargarTodasLasMediciones();
+      }
+    })
+    .catch(err => {
+      mostrarAlerta('Error: ' + err.message);
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-trash"></i> Eliminar';
+    });
+}
+
 function cerrarSesion() {
   sessionStorage.clear();
-  localStorage.clear();
   window.location.href = 'login.html';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  cargarTanques();
-});
+cargarMediciones();

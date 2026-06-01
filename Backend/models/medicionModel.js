@@ -4,9 +4,13 @@ const Medicion = {
   // Obtiene todas las mediciones con nombre del dispositivo, ordenadas por fecha descendente
   getAll: (callback) => {
     const sql = `
-      SELECT m.*, d.nombre AS dispositivo_nombre, d.tanque_id
+      SELECT m.*, 
+             d.nombre AS dispositivo_nombre, 
+             d.tanque_id,
+             t.nombre AS tanque_nombre
       FROM mediciones m
       JOIN dispositivos d ON d.id = m.dispositivo_id
+      LEFT JOIN tanques t ON d.tanque_id = t.id
       ORDER BY m.fecha DESC
     `;
     db.query(sql, callback);

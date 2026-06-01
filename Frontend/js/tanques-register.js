@@ -71,7 +71,8 @@ form.addEventListener('submit', e => {
     });
 });
 
-function cerrarSesion() {
-  sessionStorage.clear();
-  window.location.href = 'login.html';
-}
+function cerrarSesión() { 
+  if (!confirm('Seguro que deseas cerrar sesión?')) return; 
+  sessionStorage.clear();  // elimina token y nombre 
+  window.location.href = 'login.html'; 
+} 

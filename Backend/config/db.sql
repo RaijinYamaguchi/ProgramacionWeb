@@ -54,4 +54,14 @@ CREATE TABLE IF NOT EXISTS `reportes` (
   FOREIGN KEY (`tanque_id`)    REFERENCES `tanques`(`id`)   ON DELETE CASCADE,
   FOREIGN KEY (`generado_por`) REFERENCES `usuarios`(`id`)  ON DELETE CASCADE
 );
-
+create table if not exists `tokens_dispositivos` (
+  `id` int auto_increment primary key,
+  `token` varchar(500) not null unique,
+  `dispositivo_id` int not null,
+  `descripcion` varchar(255),
+  `activo` tinyint(1) not null default 1,
+  `expires_at` datetime not null,
+  `creado_en` datetime not null default current_timestamp,
+  `ultimo_uso` datetime,
+  foreign key (`dispositivo_id`) references `dispositivos`(`id`) on delete cascade
+);
