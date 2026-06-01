@@ -28,6 +28,7 @@ app.use('/api/tanques',require('./routes/tanques'));
 app.use('/api/dispositivos',require('./routes/dispositivos'));
 app.use('/api/mediciones',require('./routes/mediciones'));
 app.use('/api/reportes',require('./routes/reportes'));
+app.use('/api/tokens', require('./routes/tokens'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

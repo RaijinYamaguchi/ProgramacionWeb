@@ -63,9 +63,9 @@ async function cargarTanques() {
       a.innerHTML = `
         <div class="fw-bold">${tanque.nombre}</div>
         <div class="tanque-info small text-muted">
-          📍 ${tanque.ubicacion}
+          ${tanque.ubicacion}
           <br>
-          💧 ${tanque.capacidad_max}L
+          ${tanque.capacidad_max}L
         </div>
       `;
       a.onclick = (e) => {

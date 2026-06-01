@@ -9,13 +9,21 @@
 </head>
 <body class="bg-light">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-bold">Gestión de Mediciones</span>
-      <div class="d-flex align-items-center ms-auto">
-        <span class="text-white me-3" id="nombreUsuario"></span>
-        <button class="btn btn-outline-light btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
-      </div>
+  <nav>
+    <div class="nav-logo">SCA</div>
+    <div class="nav-links">
+      <a href="inicio.html">Inicio</a>
+      <a href="Devices.html">Dispositivos</a>
+      <a href="Usuarios.html">Usuarios</a>
+      <a href="Tanques.html">Tanques</a>
+      <a href="Mediciones.html" class="active">Mediciones</a>
+      <a href="Reportes.html">Reportes</a>
+      <a href="Token.html" >Tokens ESP</a>
+      <a href="Settings.html">Configuración</a>
+    </div>
+    <div class="nav-user">
+      <span id="nombreUsuario"></span>
+      <button class="nav-cta" onclick="cerrarSesion()">Cerrar sesión</button>
     </div>
   </nav>
 

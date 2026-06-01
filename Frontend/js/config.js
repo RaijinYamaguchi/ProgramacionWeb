@@ -8,6 +8,7 @@ const API = {
     tanques:      '/api/tanques',
     mediciones:   '/api/mediciones',
     reportes:     '/api/reportes',
+    tokens:       '/api/tokens'
   },
   url(key) {
     return this.BASE_URL + this.endpoints[key];

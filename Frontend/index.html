@@ -1,326 +1,287 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SCA — Sistema de Control de Agua</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/styles.css" />
-<script type="text/javascript">
-              window.onload = function(){
-              (function(d, script) {
-              script = d.createElement('script');
-              script.type = 'text/javascript';
-              script.async = true;
-              script.src = 'https://w.app/widget-v1/EwelGL.js';
-              d.getElementsByTagName('head')[0].appendChild(script);
-              }(document));
-              };
-              </script>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-
-<!-- ═══════ NAV ═══════ -->
-<nav>
-  <div class="nav-logo">SCA</div>
-  <div class="nav-links">
-    <a href="#features">Características</a>
-    <a href="#funciones">Funciones</a>
-    <a href="#nosotros">Nosotros</a>
-  </div>
-  <button class="nav-cta" id="iniciar-sesion-btn">Comenzar</button>
-</nav>
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-badge">// Sistema de Control de Agua — SCA //</div>
-  <h1>
-    El agua de tu hogar,
-    <span class="line-blue">bajo tu control.</span>
-  </h1>
-  <p class="hero-sub">
-    Una plataforma IoT inteligente que monitorea, automatiza y optimiza
-    el consumo de agua en hogares inteligentes — en tiempo real, desde cualquier dispositivo.
-  </p>
-  <div class="hero-btns">
-    <button class="btn-primary" id="registro-btn">Iniciar gratis</button>
-    <button class="btn-secondary">Ver demo →</button>
-  </div>
-
-  <div class="terminal-wrap">
-    <div class="terminal">
-      <div class="terminal-bar">
-        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-        <span class="terminal-title">sca_dashboard.json</span>
-      </div>
-      <div class="terminal-body">
-        <span class="t-comment">// SCA — Lectura en tiempo real</span><br>
-        <span class="t-bracket">{</span><br>
-        &nbsp;&nbsp;<span class="t-key">"dispositivo"</span>: <span class="t-str">"ESP32-SCA-01"</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"estado"</span>: <span class="t-on">"ACTIVO"</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"flujo_actual"</span>: <span class="t-num">3.42</span> <span class="t-comment">// L/min</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"consumo_hoy"</span>: <span class="t-num">127.8</span> <span class="t-comment">// litros</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"nivel_cisterna"</span>: <span class="t-num">84</span> <span class="t-comment">// %</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"valvula_principal"</span>: <span class="t-on">"ABIERTA"</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"valvula_jardín"</span>: <span class="t-off">"CERRADA"</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"alerta_fuga"</span>: <span class="t-on">false</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"automatizacion"</span>: <span class="t-on">"HABILITADA"</span><br>
-        <span class="t-bracket">}</span><br>
-        <span class="t-label">sca@home:~$</span> <span class="cursor"></span>
-      </div>
+<body class="has-fixed-nav">
+  <nav>
+    <div class="nav-logo">SCA</div>
+    <div class="nav-links">
+      <a href="#features">Características</a>
+      <a href="#funciones">Funciones</a>
+      <a href="#nosotros">Nosotros</a>
     </div>
-  </div>
-</section>
+    <button class="nav-cta" id="iniciar-sesion-btn">Comenzar</button>
+  </nav>
 
-
-<!-- ═══════ STATS ═══════ -->
-<div class="stats-bar">
-  <div class="stat reveal">
-    <span class="stat-num">40%</span>
-    <span class="stat-label">Ahorro promedio de agua</span>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num">&lt;1s</span>
-    <span class="stat-label">Latencia de respuesta</span>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num">24/7</span>
-    <span class="stat-label">Monitoreo continuo</span>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num">99.9%</span>
-    <span class="stat-label">Uptime garantizado</span>
-  </div>
-</div>
-
-
-<!-- ═════ CARACTERÍSTICAS ════════ -->
-<section id="features" class="features-bg">
-  <div class="section-inner">
-    <p class="section-tag reveal">// Características</p>
-    <h2 class="section-title reveal">Tecnología que <em>entiende</em><br>cada gota de tu hogar</h2>
-    <p class="section-desc reveal">SCA integra sensores IoT con inteligencia en la nube para darte control total sobre el agua de tu hogar.</p>
-
-    <div class="features-grid">
-      <div class="feature-card reveal">
-        <span class="feature-icon">🌊</span>
-        <div class="feature-title">Monitoreo en Tiempo Real</div>
-        <p class="feature-desc">Visualiza el flujo, consumo y nivel de tus depósitos al instante. Los datos se actualizan cada segundo desde tus sensores IoT.</p>
-        <span class="feature-tag">Datos en vivo</span>
-      </div>
-
-      <div class="feature-card reveal">
-        <span class="feature-icon">🤖</span>
-        <div class="feature-title">Automatización Inteligente</div>
-        <p class="feature-desc">Programa horarios, activa válvulas por condiciones y deja que SCA tome decisiones basadas en tus hábitos de consumo.</p>
-        <span class="feature-tag">Automatizacion</span>
-      </div>
-
-      <div class="feature-card reveal">
-        <span class="feature-icon">📊</span>
-        <div class="feature-title">Reportes y Analsis</div>
-        <p class="feature-desc">Históricos de consumo diario, semanal y mensual. Identifica patrones y reduce tu factura de agua con datos reales.</p>
-        <span class="feature-tag">Analiticos</span>
-      </div>
-
-      <div class="feature-card reveal">
-        <span class="feature-icon">📱</span>
-        <div class="feature-title">Control Remoto Total</div>
-        <p class="feature-desc">Abre o cierra válvulas desde cualquier lugar del mundo. Tu hogar responde a tus comandos en menos de un segundo.</p>
-        <span class="feature-tag">Control remoto</span>
-      </div>
-
-      <div class="feature-card reveal">
-        <span class="feature-icon">🔒</span>
-        <div class="feature-title">Seguridad Cifrada</div>
-        <p class="feature-desc">Comunicación encriptada entre sensores y la nube. Tu red doméstica y tus datos están protegidos en todo momento.</p>
-        <span class="feature-tag">SECURE_COM</span>
-      </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">// Sistema de Control de Agua — SCA //</div>
+    <h1>
+      El agua de tu hogar,
+      <span class="line-blue">bajo tu control.</span>
+    </h1>
+    <p class="hero-sub">
+      Una plataforma IoT inteligente que monitorea, automatiza y optimiza
+      el consumo de agua en hogares inteligentes — en tiempo real, desde cualquier dispositivo.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" id="registro-btn">Iniciar gratis</button>
+      <button class="btn-secondary">Ver demo →</button>
     </div>
-  </div>
-</section>
 
-
-<!-- ═══════ CÓMO FUNCIONA ════════ -->
-<section>
-  <div class="section-inner">
-    <p class="section-tag reveal">// ¿Cómo funciona?</p>
-    <h2 class="section-title reveal">De tu cisterna <em>a la nube</em><br>en cuatro pasos</h2>
-
-    <div class="steps">
-      <div class="step reveal">
-        <div class="step-num">01 — INSTALAR</div>
-        <div class="step-title">Conecta los sensores</div>
-        <p class="step-desc">Instala los módulos ESP32 en las tuberías y depósitos de tu hogar. Sin obras, sin complicaciones.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">02 — VINCULAR</div>
-        <div class="step-title">Configura la plataforma</div>
-        <p class="step-desc">Registra tus dispositivos en SCA Cloud. La configuración inicial toma menos de 5 minutos.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">03 — AUTOMATIZAR</div>
-        <div class="step-title">Define tus reglas</div>
-        <p class="step-desc">Programa horarios, umbrales de alerta y lógica de automatización según tu rutina.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">04 — CONTROLAR</div>
-        <div class="step-title">Gestiona desde cualquier lugar</div>
-        <p class="step-desc">Accede a tu dashboard desde el navegador y toma el control de tu consumo en tiempo real.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">Incluye modo SIN CONEXION</div>
-        <div class="step-title">Gestiona desde cualquier lugar, incluso sin cobertura de Internet</div>
-        <p class="step-desc">Accede a tu dashboard desde el navegador.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ══════════════════ FUNCIONES ══════════════════ -->
-<section id="funciones" class="functions-bg">
-  <div class="section-inner">
-    <p class="section-tag reveal">// Funciones</p>
-    <h2 class="section-title reveal">Todo lo que necesitas<br>para <em>optimizar</em> tu agua</h2>
-    <p class="section-desc reveal">SCA no es solo un monitor — es un sistema completo de gestión hídrica para el hogar del futuro.</p>
-
-    <div class="func-grid">
-      <div class="func-item reveal">
-        <div class="func-icon">⚡</div>
-        <div class="func-content">
-          <h4>Control de bombas en tiempo real</h4>
-          <p>Activa o desactiva cualquier bomba de tu red hidráulica con un solo clic desde el dashboard.</p>
+    <div class="terminal-wrap">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot r"></div>
+          <div class="dot y"></div>
+          <div class="dot g"></div>
+          <span class="terminal-title">sca_dashboard.json</span>
         </div>
-      </div>
-      <div class="func-item reveal">
-        <div class="func-icon">📅</div>
-        <div class="func-content">
-          <h4>Programación por horarios</h4>
-          <p>Automatiza el riego, llenado de tinaco o cualquier zona de agua según el día y la hora que elijas.</p>
-        </div>
-      </div>
-      <div class="func-item reveal">
-        <div class="func-icon">🔔</div>
-        <div class="func-content">
-          <h4>Notificaciones push y por correo</h4>
-          <p>Recibe alertas inmediatas en tu dispositivo ante cualquier anomalía o umbral superado.</p>
-        </div>
-      </div>
-      <div class="func-item reveal">
-        <div class="func-icon">💧</div>
-        <div class="func-content">
-          <h4>Medidor de consumo mensual</h4>
-          <p>Compara tu consumo mes a mes y recibe recomendaciones personalizadas de ahorro.</p>
-        </div>
-      </div>
-      <div class="func-item reveal">
-        <div class="func-icon">🖥️</div>
-        <div class="func-content">
-          <h4>Dashboard multi-dispositivo</h4>
-          <p>Interfaz responsive accesible desde PC, tablet o móvil. Todos tus datos, siempre disponibles.</p>
-        </div>
-      </div>
-      <!-- <div class="func-item reveal">
-        <div class="func-icon">🔌</div>
-        <div class="func-content">
-          <h4>API abierta para integraciones</h4>
-          <p>Conecta SCA con Home Assistant, Google Home, Alexa o cualquier plataforma smart home.</p>
-        </div>
-      </div> -->
-      <div class="func-item reveal">
-        <div class="func-icon">📁</div>
-        <div class="func-content">
-          <h4>Exportación de datos</h4>
-          <p>Descarga tu historial de consumo en CSV o PDF para reportes personales o administrativos.</p>
+        <div class="terminal-body">
+          <span class="t-comment">// SCA — Lectura en tiempo real</span><br>
+          <span class="t-bracket">{</span><br>
+          &nbsp;&nbsp;<span class="t-key">"dispositivo"</span>: <span class="t-str">"ESP32-SCA-01"</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"estado"</span>: <span class="t-on">"ACTIVO"</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"flujo_actual"</span>: <span class="t-num">3.42</span> <span class="t-comment">// L/min</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"consumo_hoy"</span>: <span class="t-num">127.8</span> <span class="t-comment">// litros</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"nivel_cisterna"</span>: <span class="t-num">84</span> <span class="t-comment">// %</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"valvula_principal"</span>: <span class="t-on">"ABIERTA"</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"valvula_jardín"</span>: <span class="t-off">"CERRADA"</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"alerta_fuga"</span>: <span class="t-on">false</span>,<br>
+          &nbsp;&nbsp;<span class="t-key">"automatizacion"</span>: <span class="t-on">"HABILITADA"</span><br>
+          <span class="t-bracket">}</span><br>
+          <span class="t-label">sca@home:~$</span> <span class="cursor"></span>
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat reveal">
+      <span class="stat-num">40%</span>
+      <span class="stat-label">Ahorro promedio de agua</span>
+    </div>
+    <div class="stat reveal">
+      <span class="stat-num">&lt;1s</span>
+      <span class="stat-label">Latencia de respuesta</span>
+    </div>
+    <div class="stat reveal">
+      <span class="stat-num">24/7</span>
+      <span class="stat-label">Monitoreo continuo</span>
+    </div>
+    <div class="stat reveal">
+      <span class="stat-num">99.9%</span>
+      <span class="stat-label">Uptime garantizado</span>
+    </div>
   </div>
-</section>
 
-
-<!-- ══════════════════ NOSOTROS ══════════════════ -->
-<section id="nosotros">
-  <div class="section-inner">
-    <div class="about-inner">
-      <div class="about-text">
-        <p class="section-tag reveal">// Sobre nosotros</p>
-        <h2 class="section-title reveal">Construimos el <em>futuro</em><br>del agua inteligente</h2>
-        <p class="section-desc reveal">
-          Somos un equipo de ingenieros en sistemas apasionados por la tecnología IoT y la sostenibilidad. 
-          Nacimos con la misión de hacer que los hogares mexicanos consuman agua de manera más inteligente, 
-          eficiente y consciente — sin sacrificar comodidad.
-        </p>
-        <div class="about-values reveal">
-          <div class="value-line">Innovación centrada en el usuario final</div>
-          <div class="value-line">Hardware confiable con firmware de calidad</div>
-          <div class="value-line">Compromiso con la sustentabilidad hídrica</div>
-          <div class="value-line">Transparencia en cada dato que mostramos</div>
+  <!-- CARACTERÍSTICAS -->
+  <section id="features" class="features-bg">
+    <div class="section-inner">
+      <p class="section-tag reveal">// Características</p>
+      <h2 class="section-title reveal">Tecnología que <em>entiende</em><br>cada gota de tu hogar</h2>
+      <p class="section-desc reveal">SCA integra sensores IoT con inteligencia en la nube para darte control total sobre el agua de tu hogar.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-title">Monitoreo en Tiempo Real</div>
+          <p class="feature-desc">Visualiza el flujo, consumo y nivel de tus depósitos al instante. Los datos se actualizan cada segundo desde tus sensores IoT.</p>
+          <span class="feature-tag">Datos en vivo</span>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-title">Automatización Inteligente</div>
+          <p class="feature-desc">Programa horarios, activa válvulas por condiciones y deja que SCA tome decisiones basadas en tus hábitos de consumo.</p>
+          <span class="feature-tag">Automatizacion</span>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-title">Reportes y Análisis</div>
+          <p class="feature-desc">Históricos de consumo diario, semanal y mensual. Identifica patrones y reduce tu factura de agua con datos reales.</p>
+          <span class="feature-tag">Analiticos</span>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-title">Control Remoto Total</div>
+          <p class="feature-desc">Abre o cierra válvulas desde cualquier lugar del mundo. Tu hogar responde a tus comandos en menos de un segundo.</p>
+          <span class="feature-tag">Control remoto</span>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-title">Seguridad Cifrada</div>
+          <p class="feature-desc">Comunicación encriptada entre sensores y la nube. Tu red doméstica y tus datos están protegidos en todo momento.</p>
+          <span class="feature-tag">SECURE_COM</span>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="about-visual reveal">
-        <div class="about-card">
-          <p class="section-tag" style="margin-bottom:1.5rem;">// Equipo SCA</p>
+  <!-- CÓMO FUNCIONA -->
+  <section>
+    <div class="section-inner">
+      <p class="section-tag reveal">// ¿Cómo funciona?</p>
+      <h2 class="section-title reveal">De tu cisterna <em>a la nube</em><br>en cuatro pasos</h2>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01 — INSTALAR</div>
+          <div class="step-title">Conecta los sensores</div>
+          <p class="step-desc">Instala los módulos ESP32 en las tuberías y depósitos de tu hogar. Sin obras, sin complicaciones.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02 — VINCULAR</div>
+          <div class="step-title">Configura la plataforma</div>
+          <p class="step-desc">Registra tus dispositivos en SCA Cloud. La configuración inicial toma menos de 5 minutos.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03 — AUTOMATIZAR</div>
+          <div class="step-title">Define tus reglas</div>
+          <p class="step-desc">Programa horarios, umbrales de alerta y lógica de automatización según tu rutina.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">04 — CONTROLAR</div>
+          <div class="step-title">Gestiona desde cualquier lugar</div>
+          <p class="step-desc">Accede a tu dashboard desde el navegador y toma el control de tu consumo en tiempo real.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">+ Modo sin conexión</div>
+          <div class="step-title">Operación local incluso sin Internet</div>
+          <p class="step-desc">El sistema sigue funcionando y registrando datos durante cortes de red.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="team-member">
-            <div class="member-avatar">AL</div>
-            <div>
-              <div class="member-name">Luis Amngel Amador</div>
-              <div class="member-role">Lead Engineer & Co-founder</div>
-              <div class="member-role">Backend & Cloud Infrastructure</div>
+  <div class="divider"></div>
+
+  <!-- FUNCIONES -->
+  <section id="funciones" class="functions-bg">
+    <div class="section-inner">
+      <p class="section-tag reveal">// Funciones</p>
+      <h2 class="section-title reveal">Todo lo que necesitas<br>para <em>optimizar</em> tu agua</h2>
+      <p class="section-desc reveal">SCA no es solo un monitor — es un sistema completo de gestión hídrica para el hogar del futuro.</p>
+      <div class="func-grid">
+        <div class="func-item reveal">
+          <div class="func-icon">⚡</div>
+          <div class="func-content">
+            <h4>Control de bombas en tiempo real</h4>
+            <p>Activa o desactiva cualquier bomba de tu red hidráulica con un solo clic desde el dashboard.</p>
+          </div>
+        </div>
+        <div class="func-item reveal">
+          <div class="func-content">
+            <h4>Programación por horarios</h4>
+            <p>Automatiza el riego, llenado de tinaco o cualquier zona de agua según el día y la hora que elijas.</p>
+          </div>
+        </div>
+        <div class="func-item reveal">
+          <div class="func-content">
+            <h4>Notificaciones push y por correo</h4>
+            <p>Recibe alertas inmediatas en tu dispositivo ante cualquier anomalía o umbral superado.</p>
+          </div>
+        </div>
+        <div class="func-item reveal">
+          <div class="func-content">
+            <h4>Medidor de consumo mensual</h4>
+            <p>Compara tu consumo mes a mes y recibe recomendaciones personalizadas de ahorro.</p>
+          </div>
+        </div>
+        <div class="func-item reveal">
+          <div class="func-content">
+            <h4>Dashboard multi-dispositivo</h4>
+            <p>Interfaz responsive accesible desde PC, tablet o móvil. Todos tus datos, siempre disponibles.</p>
+          </div>
+        </div>
+        <div class="func-item reveal">
+          <div class="func-content">
+            <h4>Exportación de datos</h4>
+            <p>Descarga tu historial de consumo en CSV o PDF para reportes personales o administrativos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section id="nosotros">
+    <div class="section-inner">
+      <div class="about-inner">
+        <div class="about-text">
+          <p class="section-tag reveal">// Sobre nosotros</p>
+          <h2 class="section-title reveal">Construimos el <em>futuro</em><br>del agua inteligente</h2>
+          <p class="section-desc reveal">
+            Somos un equipo de ingenieros en sistemas apasionados por la tecnología IoT y la sostenibilidad.
+            Nacimos con la misión de hacer que los hogares mexicanos consuman agua de manera más inteligente,
+            eficiente y consciente — sin sacrificar comodidad.
+          </p>
+          <div class="about-values reveal">
+            <div class="value-line">Innovación centrada en el usuario final</div>
+            <div class="value-line">Hardware confiable con firmware de calidad</div>
+            <div class="value-line">Compromiso con la sustentabilidad hídrica</div>
+            <div class="value-line">Transparencia en cada dato que mostramos</div>
+          </div>
+        </div>
+        <div class="about-visual reveal">
+          <div class="about-card">
+            <p class="section-tag" style="margin-bottom:1.5rem;">// Equipo SCA</p>
+            <div class="team-member">
+              <div class="member-avatar">AL</div>
+              <div>
+                <div class="member-name">Luis Ángel Amador</div>
+                <div class="member-role">Lead Engineer & Co-founder</div>
+                <div class="member-role">Backend & Cloud Infrastructure</div>
+              </div>
+            </div>
+            <div class="team-member">
+              <div class="member-avatar">HE</div>
+              <div>
+                <div class="member-name">Erwin Hernández</div>
+                <div class="member-role">IoT Architect & Database Development</div>
+                <div class="member-role">UX Design & Frontend Dev</div>
+              </div>
+            </div>
+            <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--Bordes);">
+              <p style="font-family:var(--mono); font-size:0.7rem; color:var(--muted); line-height:1.8;">
+                San Luis Potosí, México<br>
+                Especializados en ESP32/ESP8266 / MySQL / Full Stack / Redes<br>
+                Proyecto orientado a la conservación del vital líquido y la automatización de procesos.
+              </p>
             </div>
           </div>
-
-          <div class="team-member">
-            <div class="member-avatar">HE</div>
-            <div>
-              <div class="member-name">Erwin Hernandes</div>
-              <div class="member-role">IoT Architect & Database Develpoment</div>
-              <div class="member-role">UX Design & Frontend Dev</div>
-            </div>
-          </div>
-
-          <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--Bordes);">
-            <p style="font-family:var(--mono); font-size:0.7rem; color:var(--muted); line-height:1.8;">
-              San Luis Potosí, México<br>
-              Especializados en ESP32/ESP8266 / MYSQL/ Full Stack / Redes<br>
-              Proyecto orientado a conservacion del vital liquido, y la automatizacion de procesos
-            </p>
-          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-<!-- ═══════ CTA ═══════════ -->
-<section class="cta-section">
-  <div class="section-inner">
-    <h2 class="reveal">¿Listo para controlar<br><em style="color:var(--accent);font-style:normal;">cada gota</em>?</h2>
-    <p class="reveal">Empieza hoy sin costo. Conecta tu primer sensor en menos de 5 minutos.</p>
-    <div class="hero-btns" style="justify-content:center;">
-      <button class="btn-primary reveal" id="registro-btn">Crear cuenta gratis</button>
-      <button class="btn-secondary reveal" id="contactar-btn">Contactar al equipo</button>
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <h2 class="reveal">¿Listo para controlar<br><em style="color:var(--accent);font-style:normal;">cada gota</em>?</h2>
+      <p class="reveal">Empieza hoy sin costo. Conecta tu primer sensor en menos de 5 minutos.</p>
+      <div class="hero-btns" style="justify-content:center;">
+        <button class="btn-primary reveal" id="registro-btn">Crear cuenta gratis</button>
+        <button class="btn-secondary reveal" id="contactar-btn">Contactar al equipo</button>
+      </div>
+      <p class="cta-mono reveal">// Sin tarjeta de crédito · Soporte en español · Hardware compatible con ESP32/ESP8266 //</p>
     </div>
-    <p class="cta-mono reveal">// Sin tarjeta de crédito · Soporte en español · Hardware compatible con ESP32/ESP8266 //</p>
-  </div>
-</section>
+  </section>
 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">SCA</div>
+    <div class="footer-copy">© 2025 Sistema de Control de Agua. S.L.P, MX.</div>
+    <div class="footer-links">
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+      <a href="https://w.app/ewelgl">Contacto</a>
+      <a href="https://github.com/RaijinYamaguchi/ProgramacionWeb">GitHub</a>
+    </div>
+  </footer>
 
-<!-- ══════ FOOTER ═══════ -->
-<footer>
-  <div class="footer-logo">SCA</div>
-  <div class="footer-copy">© 2025 Sistema de Control de Agua. S.L.P, MX.</div>
-  <div class="footer-links">
-    <a href="privacidad.html">Privacidad</a>
-    <a href="terminos.html">Términos</a>
-    <a href="https://w.app/ewelgl">Contacto</a>
-    <a href="https://github.com/RaijinYamaguchi/ProgramacionWeb">GitHub</a>
-  </div>
-</footer>
-<script src="js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/index.js"></script>
+  <script async src="https://w.app/widget-v1/EwelGL.js"></script>
 </body>
 </html>

@@ -7,52 +7,63 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-light">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-bold">Editar Tanque</span>
-      <div class="d-flex align-items-center ms-auto">
-        <span class="text-white me-3" id="nombreUsuario"></span>
-        <button class="btn btn-outline-light btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
-      </div>
+<body class="has-fixed-nav">
+  <nav>
+    <div class="nav-logo">SCA</div>
+    <div class="nav-links">
+      <a href="inicio.html">Inicio</a>
+      <a href="Devices.html">Dispositivos</a>
+      <a href="Usuarios.html">Usuarios</a>
+      <a href="Tanques.html" class="active">Tanques</a>
+      <a href="Mediciones.html">Mediciones</a>
+      <a href="Reportes.html">Reportes</a>
+      <a href="Token.html">Tokens ESP</a>
+      <a href="Settings.html">Configuración</a>
+    </div>
+    <div class="nav-user">
+      <span id="nombreUsuario"></span>
+      <button class="nav-cta" onclick="cerrarSesion()">Cerrar sesión</button>
     </div>
   </nav>
-  <main class="container mt-4">
+
+  <main class="container" style="margin-top: 90px;">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow">
-          <div class="card-body">
-            <h2 class="card-title mb-4">Editar Tanque</h2>
+      <div class="col-lg-6 col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-4 p-md-5">
+            <h2 class="card-title mb-4 text-center fw-bold">Editar Tanque</h2>
             <div id="alerta"></div>
             <form id="formEditar">
-              <input type="hidden" name="id" id="tanqueId">
+              <input type="hidden" id="tanqueId">
               <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre del Tanque</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" required>
-              </div>
-              <div class="mb-3">
-                <label for="ubicacion" class="form-label">Ubicación</label>
-                <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+                <label for="nombre" class="form-label fw-semibold">Nombre del Tanque</label>
+                <input type="text" class="form-control" id="nombre" required>
               </div>
               <div class="mb-3">
-                <label for="capacidad_max" class="form-label">Capacidad Máxima (litros)</label>
-                <input type="number" class="form-control" id="capacidad_max" name="capacidad_max" required>
+                <label for="ubicacion" class="form-label fw-semibold">Ubicación</label>
+                <input type="text" class="form-control" id="ubicacion" required>
               </div>
               <div class="mb-3">
-                <label for="nivel_min_alerta" class="form-label">Nivel Mínimo de Alerta (litros)</label>
-                <input type="number" class="form-control" id="nivel_min_alerta" name="nivel_min_alerta" required>
+                <label for="capacidad_max" class="form-label fw-semibold">Capacidad Máxima (litros)</label>
+                <input type="number" class="form-control" id="capacidad_max" required>
               </div>
-              <div class="mb-3">
-                <label for="nivel_max_alerta" class="form-label">Nivel Máximo de Alerta (litros)</label>
-                <input type="number" class="form-control" id="nivel_max_alerta" name="nivel_max_alerta" required>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="nivel_min_alerta" class="form-label fw-semibold">Nivel Mínimo Alerta (L)</label>
+                  <input type="number" class="form-control" id="nivel_min_alerta">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="nivel_max_alerta" class="form-label fw-semibold">Nivel Máximo Alerta (L)</label>
+                  <input type="number" class="form-control" id="nivel_max_alerta">
+                </div>
               </div>
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="activo" name="activo">
-                <label class="form-check-label" for="activo">Tanque Activo</label>
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="activo">
+                <label class="form-check-label fw-semibold" for="activo">Tanque Activo</label>
               </div>
-              <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary flex-grow-1">Guardar Cambios</button>
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='Tanques.html'">Cancelar</button>
+              <div class="d-flex gap-3 mt-2">
+                <button type="submit" class="btn btn-primary flex-grow-1 py-2 fw-semibold">Guardar Cambios</button>
+                <button type="button" class="btn btn-outline-secondary flex-grow-1 py-2" onclick="window.location.href='Tanques.html'">Cancelar</button>
               </div>
             </form>
           </div>
@@ -60,6 +71,18 @@
       </div>
     </div>
   </main>
+
+  <footer>
+    <div class="footer-logo">SCA</div>
+    <div class="footer-copy">© 2025 Sistema de Control de Agua. S.L.P, MX.</div>
+    <div class="footer-links">
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+      <a href="https://w.app/ewelgl">Contacto</a>
+      <a href="https://github.com/RaijinYamaguchi/ProgramacionWeb">GitHub</a>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/tanques-editar.js"></script>
 </body>
